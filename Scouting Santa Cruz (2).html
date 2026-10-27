@@ -1,0 +1,919 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Scouting Santa Cruz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: informe de rival en columna única con índice; cada fase del modelo de juego enlaza a la pizarra animada. */
+:root{
+  --bg:#f3f4f2; --panel:#ffffff; --ink:#1b2220; --muted:#5a6561; --rule:#d6dbd7; --chip:#e8ebe8; --head:#14201d; --head-ink:#f2f5f3;
+  --pitch:#cfe0c9; --pitch2:#c4d9bf; --line:#f7fbf5;
+  --sc:#0f7471; --sc-ink:#ffffff; --riv:#c8302c; --riv-ink:#ffffff; --hot:#b7770b; --zone:rgba(183,119,11,.18);
+  --ok:#2f7d3c; --bad:#b3261e; --ball:#ffffff; --ball-edge:#1b2220;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101413; --panel:#181e1c; --ink:#e5eae7; --muted:#99a5a0; --rule:#2a3330; --chip:#212926; --head:#0b1110; --head-ink:#e5eae7;
+  --pitch:#1e3828; --pitch2:#1b3324; --line:#5b876a;
+  --sc:#40c2bd; --sc-ink:#06201f; --riv:#ff6e66; --riv-ink:#2a0605; --hot:#f2b13c; --zone:rgba(242,177,60,.18);
+  --ok:#6fcf7d; --bad:#ff7a70; --ball:#f4f4f0; --ball-edge:#0c0f0e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101413; --panel:#181e1c; --ink:#e5eae7; --muted:#99a5a0; --rule:#2a3330; --chip:#212926; --head:#0b1110; --head-ink:#e5eae7;
+  --pitch:#1e3828; --pitch2:#1b3324; --line:#5b876a;
+  --sc:#40c2bd; --sc-ink:#06201f; --riv:#ff6e66; --riv-ink:#2a0605; --hot:#f2b13c; --zone:rgba(242,177,60,.18);
+  --ok:#6fcf7d; --bad:#ff7a70; --ball:#f4f4f0; --ball-edge:#0c0f0e; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1180px;margin-inline:auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+
+/* portada */
+.cover{background:var(--head);color:var(--head-ink);border-radius:12px;padding:22px 22px 18px;display:grid;gap:16px}
+.cover .kick{font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.cover h1{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(2.1rem,4.6vw,3.2rem);line-height:.95;margin:0;letter-spacing:.01em;text-wrap:balance}
+.cover h1 span{color:#5fd3cd}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:10px 18px;border-top:1px solid rgba(255,255,255,.18);padding-top:14px}
+.meta div{display:grid;gap:2px;min-width:0}
+.meta b{font-family:var(--display);font-weight:600;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.meta span{font-size:.95rem}
+.toc{display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid rgba(255,255,255,.18);padding-top:12px}
+.toc a{font:600 .82rem/1 var(--body);color:var(--head-ink);text-decoration:none;padding:7px 10px;border:1px solid rgba(255,255,255,.25);border-radius:999px}
+.toc a:hover{background:rgba(255,255,255,.08)}
+
+/* secciones */
+.sec{display:grid;gap:14px;scroll-margin-top:12px}
+.sh{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:6px;margin:0}
+.sh .n{font-family:var(--mono);font-size:.8rem;color:var(--sc)}
+.sh h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:1.6rem;margin:0;letter-spacing:.02em;line-height:1}
+.lead{margin:0;color:var(--muted);max-width:80ch}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px 16px;min-width:0}
+.ct{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:1.12rem;margin:0 0 6px}
+.note{font-size:.86rem;color:var(--muted);margin:0 0 8px;max-width:90ch}
+.note a{color:var(--muted)}
+ul.bl{margin:0;padding-left:1.1rem;font-size:.95rem} ul.bl li{margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:12px}
+
+/* amenaza */
+.lvl{display:inline-block;font:700 .72rem/1 var(--body);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px;border:1.5px solid currentColor;white-space:nowrap}
+.lvl.a{color:var(--bad)} .lvl.m{color:var(--hot)} .lvl.b{color:var(--ok)}
+.keyf{display:grid;gap:10px;counter-reset:k}
+.keyf li{list-style:none;display:grid;grid-template-columns:2rem 1fr;gap:10px;align-items:start}
+.keyf li::before{counter-increment:k;content:counter(k);font-family:var(--display);font-weight:700;font-size:1.4rem;color:var(--sc);line-height:1.2}
+.keyf{margin:0;padding:0}
+
+/* tablas */
+.tw{overflow-x:auto}
+.ev{width:100%;border-collapse:collapse;font-size:.9rem;font-variant-numeric:tabular-nums}
+.ev th,.ev td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.ev th{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem;color:var(--muted);white-space:nowrap}
+.ev td.n,.ev th.n{text-align:right;white-space:nowrap}
+.ev td.d{white-space:nowrap;font-family:var(--mono);font-size:.8rem}
+.ev td b{font-weight:700}
+.ev tr.bad td{color:var(--bad);font-weight:600}
+.res{display:inline-block;min-width:1.4rem;text-align:center;font-weight:700}
+.res.V{color:var(--ok)} .res.E{color:var(--hot)} .res.D{color:var(--bad)}
+.scroll{max-height:460px;overflow:auto} .scroll th{position:sticky;top:0;background:var(--panel)}
+
+/* fases */
+.phase{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:var(--panel);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+@media (max-width:820px){.phase{grid-template-columns:minmax(0,1fr)}}
+.phase .ph{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--rule)}
+.phase .ph h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:1.2rem;margin:0;letter-spacing:.02em}
+.phase .ph .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.phase .col{padding:12px 16px;min-width:0}
+.phase .col+.col{border-left:1px solid var(--rule)}
+@media (max-width:820px){.phase .col+.col{border-left:0;border-top:1px solid var(--rule)}}
+.phase h4{font-family:var(--display);font-weight:600;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px;color:var(--muted)}
+.phase h4.k{color:var(--riv)}
+.go{font:600 .82rem/1 var(--body);padding:7px 10px;border-radius:6px;border:1px solid var(--sc);background:transparent;color:var(--sc);cursor:pointer}
+.go:hover{background:var(--sc);color:var(--sc-ink)}
+
+/* alineación */
+.xi{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px}
+@media (max-width:820px){.xi{grid-template-columns:minmax(0,1fr)}}
+svg.lu{display:block;width:100%;height:auto;max-width:520px;margin-inline:auto;border-radius:8px}
+
+/* gráficos */
+.div{display:grid;gap:6px}
+.div .r{display:grid;grid-template-columns:1fr 3.6rem 1fr;gap:8px;align-items:center;font-size:.85rem;font-variant-numeric:tabular-nums}
+.div .lab{text-align:center;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.div .l,.div .rt{display:flex;align-items:center;gap:6px;height:20px} .div .l{justify-content:flex-end}
+.div .bar{height:16px;border-radius:4px} .div .hd{font-size:.75rem;color:var(--muted);font-weight:600}
+.hb{display:grid;gap:6px}
+.hb .r{display:grid;grid-template-columns:minmax(0,10.5rem) 1fr 2rem;gap:8px;align-items:center;font-size:.85rem}
+.hb .r span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb .tr{height:14px;background:var(--chip);border-radius:4px} .hb .fl{height:100%;border-radius:4px}
+.hb b{text-align:right;font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr));gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;display:grid;gap:2px}
+.kpi b{font-family:var(--display);font-weight:700;font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:.82rem;color:var(--muted)}
+
+/* pizarra */
+.tabs{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-start}
+.tg{display:flex;flex-direction:column;gap:6px;min-width:0}
+.tg>b{font-family:var(--display);font-weight:600;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tg>div{display:flex;flex-wrap:wrap;gap:6px}
+.tab{font:600 .9rem/1 var(--body);padding:8px 12px;border-radius:6px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab.weak[aria-selected="true"]{background:var(--hot);border-color:var(--hot);color:#1a1205}
+.tab.plan[aria-selected="true"]{background:var(--riv);border-color:var(--riv);color:var(--riv-ink)}
+.tab:focus-visible,.ctl:focus-visible,.dot:focus-visible,.go:focus-visible,.toc a:focus-visible{outline:2px solid var(--sc);outline-offset:2px}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 21rem;gap:16px;align-items:start}
+@media (max-width:960px){.main{grid-template-columns:minmax(0,1fr)}}
+.board{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px;min-width:0}
+.boardhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:10px}
+.boardhead h2{font-family:var(--display);font-weight:700;font-size:1.45rem;margin:0;text-transform:uppercase;letter-spacing:.02em;line-height:1.05}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.8rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:11px;height:11px;border-radius:50%;display:inline-block}
+.ln{width:20px;height:0;border-top:2px solid var(--ink);display:inline-block}
+svg.pitch{display:block;width:100%;height:auto;border-radius:6px}
+.caption{margin-top:12px;min-height:4.6em;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.caption .step{font-family:var(--mono);font-size:.8rem;color:var(--sc);padding-top:3px;white-space:nowrap}
+.caption p{margin:0;font-size:1rem;max-width:70ch}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.ctl{font:600 .9rem/1 var(--body);padding:9px 12px;border-radius:6px;border:1px solid var(--rule);background:var(--chip);color:var(--ink);cursor:pointer;min-width:44px}
+.ctl.primary{background:var(--sc);border-color:var(--sc);color:var(--sc-ink)}
+.dots{display:flex;gap:6px;margin-left:auto;align-items:center}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--muted);background:transparent;padding:0;cursor:pointer}
+.dot.on{background:var(--sc);border-color:var(--sc)}
+.speed{font-size:.85rem;color:var(--muted);display:flex;gap:6px;align-items:center}
+.speed select{font:inherit;padding:6px;border-radius:6px;border:1px solid var(--rule);background:var(--panel);color:var(--ink)}
+aside.sheet{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px;display:grid;gap:14px;min-width:0}
+aside h3{font-family:var(--display);font-weight:600;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 4px;color:var(--muted)}
+aside h3.g{color:var(--sc)} aside h3.k{color:var(--riv)}
+aside ul{margin:0;padding-left:1.1rem;font-size:.93rem} aside li{margin-bottom:4px}
+.plan ol{margin:0;padding-left:1.3rem;display:grid;gap:8px} .plan ol b{color:var(--riv)}
+.foot{font-size:.84rem;color:var(--muted)} .foot a{color:var(--muted)}
+@media (prefers-reduced-motion: reduce){.tab,.ctl,.go{transition:none}}
+</style>
+
+<div class="wrap">
+
+  <header class="cover">
+    <div class="kick">Informe de rival · Primera B 2026 · Fecha 30</div>
+    <h1>Deportes <span>Santa Cruz</span></h1>
+    <div class="meta">
+      <div><b>Partido</b><span>Santa Cruz vs Rangers</span></div>
+      <div><b>Fecha y hora</b><span>Sábado 31 de octubre, 12:30</span></div>
+      <div><b>Estadio</b><span>Municipal Joaquín Muñoz García · césped natural · 6.000</span></div>
+      <div><b>DT rival</b><span>Dalcio Giovagnoli (desde mayo)</span></div>
+      <div><b>Muestra</b><span>29 partidos de liga · 14 alineaciones con Giovagnoli</span></div>
+      <div><b>Actualizado</b><span>26 de octubre de 2026</span></div>
+    </div>
+    <nav class="toc" aria-label="Índice">
+      <a href="#resumen">Resumen</a><a href="#contexto">Contexto</a><a href="#once">Once probable</a><a href="#fases">Modelo de juego</a><a href="#pizarra">Pizarra</a><a href="#individual">Individual</a><a href="#datos">Datos</a><a href="#plan">Plan de partido</a><a href="#anexo">Anexo</a>
+    </nav>
+  </header>
+
+  <section class="sec" id="resumen">
+    <div class="sh"><span class="n">01</span><h2>Resumen ejecutivo</h2></div>
+    <div class="grid2">
+      <div class="card">
+        <h3 class="ct">Conclusiones clave</h3>
+        <ol class="keyf">
+          <li><span><b>Equipo de bloque bajo que juega a no perder.</b> Con Giovagnoli: 6 vallas invictas en 18 partidos y 9 goles recibidos en los últimos 10. El empate le alcanza, así que esperará detrás de la pelota.</span></li>
+          <li><span><b>Ataque pobre y dependiente.</b> 5 goles en sus últimos 10 partidos. Arias hizo 17 de 29, pero solo 3 en sus últimos 10 partidos jugados. Un tercio de sus goles fueron de pelota detenida (8 penales y 2 tras córner).</span></li>
+          <li><span><b>Frágil cuando recibe primero.</b> Con el primer gol en contra: 0 ganados, 2 empates, 10 derrotas. Y concede justo después de anotar: 7 de sus 27 goles fueron seguidos de un gol en contra dentro de 5 minutos.</span></li>
+          <li><span><b>Defensa vulnerable en el juego aéreo y en su lado derecho.</b> Línea probable con tres jugadores de 1,73-1,75 m; los centros son la vía más repetida de los goles que recibe. Por el costado de Tati entraron los goles de San Marcos y de Temuco.</span></li>
+          <li><span><b>No sabe ganar en casa.</b> 1 victoria en 14 partidos de local (21 de marzo). Rangers ganó sus últimas tres visitas a Santa Cruz.</span></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3 class="ct">Nivel de amenaza por fase</h3>
+        <div class="tw"><table class="ev">
+          <thead><tr><th>Fase</th><th>Amenaza</th><th>Por qué</th></tr></thead>
+          <tbody>
+            <tr><td>Organización defensiva</td><td><span class="lvl a">Alta</span></td><td>Bloque 4-5-1 compacto; 6 vallas invictas con Giovagnoli</td></tr>
+            <tr><td>Balón parado ofensivo</td><td><span class="lvl a">Alta</span></td><td>10 de 29 goles; el gol de la ida fue córner y cabezazo</td></tr>
+            <tr><td>Ataque organizado</td><td><span class="lvl b">Baja</span></td><td>5 goles en 10 partidos; remata mucho y convierte poco</td></tr>
+            <tr><td>Transición ofensiva</td><td><span class="lvl m">Media</span></td><td>Pelotazo a Arias; más puntos de visita que de local</td></tr>
+            <tr><td>Transición defensiva</td><td><span class="lvl b">Baja</span></td><td>Concede tras anotar y en el cierre de cada tiempo</td></tr>
+            <tr><td>Defensa de centros y segunda pelota</td><td><span class="lvl b">Baja</span></td><td>Defensa baja; 6 goles en contra por centros o cabezazos y 3 desde la frontal</td></tr>
+          </tbody>
+        </table></div>
+        <p class="note" style="margin-top:8px">Amenaza = cuánto daño puede hacerle esa fase a Rangers. Baja en una fase defensiva significa que ahí Santa Cruz es vulnerable.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contexto">
+    <div class="sh"><span class="n">02</span><h2>Contexto del partido</h2></div>
+    <div class="grid3">
+      <div class="card">
+        <h3 class="ct">Condiciones</h3>
+        <ul class="bl">
+          <li><b>Sin hinchas de Rangers:</b> las autoridades no habilitaron sector visitante; las 200 entradas que se discutían no se concretaron.</li>
+          <li><b>Clima:</b> máxima de 20 °C y 10% de probabilidad de lluvia. Sin calor a las 12:30.</li>
+          <li><b>Cancha:</b> césped natural; aforo de 6.000. Santa Cruz convoca poco (1.008 personas ante San Marcos).</li>
+          <li><b>Árbitro:</b> sin designar al 26 de octubre.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="ct">Disponibilidad</h3>
+        <ul class="bl">
+          <li><b>Rangers:</b> Kevin Vásquez (lateral derecho) estaría suspendido por acumulación de amarillas. Iván Rozas vuelve a estar disponible.</li>
+          <li><b>Santa Cruz:</b> la prensa no informa lesionados ni suspendidos. Diego Arias salió en el 79' en Copiapó.</li>
+          <li>Riesgo de tarjetas en Santa Cruz: Camisassa (8 amarillas y 1 roja en liga), Tati y Cavero (7 cada uno).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="ct">Fuera de la cancha</h3>
+        <ul class="bl">
+          <li>El Tribunal declaró inadmisible la apelación de Rangers, San Felipe y Santa Cruz contra San Marcos; la multa de 500 UF se mantiene.</li>
+          <li>Siguen pendientes una segunda denuncia de la ANFP contra San Marcos y el caso de Puerto Montt.</li>
+          <li>Ambiente tenso en Santa Cruz: jugadores discutieron con hinchas tras perder con San Marcos, y el gerente del club amenazó a un relator tras el 1-1 en Copiapó.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="once">
+    <div class="sh"><span class="n">03</span><h2>Once probable y estructura</h2></div>
+    <div class="xi">
+      <div class="card">
+        <h3 class="ct">4-3-3 base · 4-5-1 sin pelota</h3>
+        <svg class="lu" id="lineup" viewBox="0 0 100 72" role="img" aria-label="Once probable de Santa Cruz en 4-3-3"></svg>
+        <p class="note" style="margin-top:8px">Basado en el once del 1-1 en Copiapó (fecha 29); la línea de cuatro repitió ante Antofagasta. Ataca hacia arriba.</p>
+      </div>
+      <div class="card">
+        <h3 class="ct">Alternativas y patrones de selección</h3>
+        <div class="tw"><table class="ev">
+          <thead><tr><th>Puesto</th><th>Probable</th><th>Alternativa</th></tr></thead>
+          <tbody>
+            <tr><td>ARQ</td><td>Dobboletta</td><td>—</td></tr>
+            <tr><td>LD</td><td>Tati</td><td>Quiroz</td></tr>
+            <tr><td>DFC</td><td>Camisassa · Flores</td><td>Cavero · Alucema · Guerrero</td></tr>
+            <tr><td>LI</td><td>Romero</td><td>Alvarado</td></tr>
+            <tr><td>MC</td><td>Alucema · Plaza · Acevedo</td><td>Orellana · Herrera · Mederos</td></tr>
+            <tr><td>EXT</td><td>Barrios · Moreno</td><td>Brito · Islame · Pinto</td></tr>
+            <tr><td>DC</td><td>D. Arias</td><td>Zeineddin</td></tr>
+          </tbody>
+        </table></div>
+        <ul class="bl" style="margin-top:10px">
+          <li>Fijos con Giovagnoli: Dobboletta, Tati y Plaza (14 de 14 alineaciones).</li>
+          <li>Con resultado a favor, pasa a 4-5-1 y mete perfiles defensivos (Delgado, Alvarado) desde el 54'-60'.</li>
+          <li>Soccerway lo califica como un equipo que rota: mantuvo el 58% del once en los últimos 6 partidos.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="fases">
+    <div class="sh"><span class="n">04</span><h2>Modelo de juego por fases</h2></div>
+    <p class="lead">Cada fase resume qué hace Santa Cruz, la evidencia que lo respalda y la recomendación para Rangers. El botón abre la jugada animada correspondiente.</p>
+
+    <article class="phase">
+      <div class="ph"><h3>Organización defensiva</h3><div class="r"><span class="lvl a">Amenaza alta</span><button class="go" type="button" onclick="showScene('bloque')">Ver en la pizarra</button></div></div>
+      <div class="col"><h4>Comportamiento</h4><ul class="bl">
+        <li>4-5-1 bajo con los extremos en la línea de volantes y Arias solo arriba.</li>
+        <li>Bascula en bloque hacia la pelota; líneas juntas, poco espacio entre volantes y defensas.</li>
+        <li>Perfil del DT: en Cobreloa 2024, de local, esperaba detrás de la mitad de cancha.</li>
+        <li>Datos: 6 vallas invictas con Giovagnoli; 9 goles recibidos en los últimos 10. En Copiapó aguantó un segundo tiempo con el 59% de la pelota para el rival.</li>
+      </ul></div>
+      <div class="col"><h4 class="k">Recomendación</h4><ul class="bl">
+        <li>Circulación rápida de lado a lado y cambios de frente para que el bloque llegue tarde.</li>
+        <li>Cargar el carril de Tati (izquierda de Rangers) con lateral y extremo.</li>
+        <li>No forzar por dentro: es donde más gente junta.</li>
+      </ul></div>
+    </article>
+
+    <article class="phase">
+      <div class="ph"><h3>Salida y construcción</h3><div class="r"><span class="lvl b">Amenaza baja</span><button class="go" type="button" onclick="showScene('salida')">Ver en la pizarra</button></div></div>
+      <div class="col"><h4>Comportamiento</h4><ul class="bl">
+        <li>Salida corta con Plaza de eje (23 años, el que más minutos juega) y Alucema de apoyo.</li>
+        <li>Si lo presionan, pelotazo a Arias (1,83-1,90 m) para ganar la primera pelota.</li>
+        <li>Dobboletta reanuda rápido con pelotazos; uno terminó en autogol en Recoleta.</li>
+        <li>Giovagnoli tras el 0-0 con Antofagasta: "Nos cortaron los circuitos".</li>
+      </ul></div>
+      <div class="col"><h4 class="k">Recomendación</h4><ul class="bl">
+        <li>Un volante encima de Plaza en cada salida.</li>
+        <li>Centrales fuertes en el juego aéreo contra los pelotazos y ganar la segunda pelota detrás de Arias.</li>
+        <li>Presionar la salida para obligarlo a jugar: con la pelota es mucho peor que sin ella.</li>
+      </ul></div>
+    </article>
+
+    <article class="phase">
+      <div class="ph"><h3>Ataque y finalización</h3><div class="r"><span class="lvl b">Amenaza baja</span><button class="go" type="button" onclick="showScene('arias')">Ver en la pizarra</button></div></div>
+      <div class="col"><h4>Comportamiento</h4><ul class="bl">
+        <li>Arias es casi todo el ataque: 17 de 29 goles, 6 de penal. Busca el contacto dentro del área.</li>
+        <li>Remata mucho y convierte poco: 20 remates ante San Felipe (perdió 1-3), 18 ante Magallanes (2 goles, ambos de penal), 18 en Recoleta (perdió 0-1).</li>
+        <li>Anota más en el primer tiempo: 16 de sus 27 goles con minuto conocido.</li>
+      </ul></div>
+      <div class="col"><h4 class="k">Recomendación</h4><ul class="bl">
+        <li>Defender a Arias de pie; cero faltas dentro del área.</li>
+        <li>Concentración máxima en el primer tiempo, donde concentra sus goles.</li>
+        <li>Permitir el remate lejano antes que la falta: no castiga desde fuera.</li>
+      </ul></div>
+    </article>
+
+    <article class="phase">
+      <div class="ph"><h3>Balón parado ofensivo</h3><div class="r"><span class="lvl a">Amenaza alta</span><button class="go" type="button" onclick="showScene('parado')">Ver en la pizarra</button></div></div>
+      <div class="col"><h4>Comportamiento</h4><ul class="bl">
+        <li>10 de 29 goles: 8 penales (Arias 6, Orellana 1, Pinto 1) y 2 tras córner.</li>
+        <li>Ida: córner de Hugo Herrera en el 69' y cabezazo de Orellana en el 70'.</li>
+        <li>En Iquique: volea de Zeineddin tras córner de Pinto. Plaza también marcó de cabeza en Temuco.</li>
+      </ul></div>
+      <div class="col"><h4 class="k">Recomendación</h4><ul class="bl">
+        <li>Marca fija a Plaza, Orellana y Arias en los córners.</li>
+        <li>Despejes largos y a los costados, nunca al centro del área.</li>
+        <li>Evitar córners y faltas innecesarias en el cierre: es su segunda vía de gol.</li>
+      </ul></div>
+    </article>
+
+    <article class="phase">
+      <div class="ph"><h3>Vulnerabilidad: su costado derecho</h3><div class="r"><span class="lvl b">Punto débil</span><button class="go" type="button" onclick="showScene('derecha')">Ver en la pizarra</button></div></div>
+      <div class="col"><h4>Comportamiento</h4><ul class="bl">
+        <li>Tati (1,73 m) queda expuesto al 2 contra 1 y al central de ese lado le cuesta cerrar diagonales.</li>
+        <li>San Marcos le hizo dos goles por ahí (14' y 35'); Cuadra (Temuco) le marcó conduciendo por ese mismo costado.</li>
+      </ul></div>
+      <div class="col"><h4 class="k">Recomendación</h4><ul class="bl">
+        <li>Lateral izquierdo de Rangers alto y extremo fijando a Tati.</li>
+        <li>Diagonales hacia adentro y remate al palo lejano; pases a la espalda de Tati cuando sube.</li>
+      </ul></div>
+    </article>
+
+    <article class="phase">
+      <div class="ph"><h3>Vulnerabilidad: centros y segunda pelota</h3><div class="r"><span class="lvl b">Punto débil</span><button class="go" type="button" onclick="showScene('frontal')">Ver en la pizarra</button></div></div>
+      <div class="col"><h4>Comportamiento</h4><ul class="bl">
+        <li>Línea probable con Tati (1,73), Romero (1,73) y Flores (1,75, 34 años).</li>
+        <li>De 18 goles en contra con detalle: 6 centros o cabezazos y 3 remates desde la frontal o de fuera (Parada, Fredes, Cuadra).</li>
+        <li>Cuando se encierra, los volantes se meten en el área y la frontal queda libre.</li>
+      </ul></div>
+      <div class="col"><h4 class="k">Recomendación</h4><ul class="bl">
+        <li>Centros al segundo palo con un rematador de cabeza.</li>
+        <li>Dos volantes en la frontal en cada centro para la segunda pelota.</li>
+        <li>Cargar a Dobboletta en los centros: dejó escapar uno ante U. Española.</li>
+      </ul></div>
+    </article>
+
+    <article class="phase">
+      <div class="ph"><h3>Gestión del partido y banca</h3><div class="r"><span class="lvl m">A vigilar</span></div></div>
+      <div class="col"><h4>Comportamiento</h4><ul class="bl">
+        <li>Primer cambio planificado cerca del 60'; si pierde, cambia en el entretiempo (San Marcos, Cobreloa, Magallanes, Iquique).</li>
+        <li>Zeineddin es su primer recambio de ataque. Sus suplentes ya marcaron: Orellana a Rangers (entró en el 57') y Quiroz a Cobreloa (entró en el 46').</li>
+        <li>Concede tras marcar: 7 de 27 goles seguidos de un gol en contra en menos de 5 minutos.</li>
+        <li>Cierre de cada tiempo: 20 de sus 41 goles en contra entre el 31'-45' y desde el 76'.</li>
+      </ul></div>
+      <div class="col"><h4 class="k">Recomendación</h4><ul class="bl">
+        <li>Si Santa Cruz anota, reanudar rápido y presionar los 5 minutos siguientes.</li>
+        <li>Golpes de intensidad antes del descanso y desde el 76'.</li>
+        <li>Anticipar los cambios ofensivos: el tramo final es su peor momento defensivo.</li>
+      </ul></div>
+    </article>
+  </section>
+
+  <section class="sec" id="pizarra">
+    <div class="sh"><span class="n">05</span><h2>Pizarra táctica</h2></div>
+    <p class="lead">Santa Cruz (verde azulado) defiende el arco de la izquierda; Rangers o el rival (rojo) ataca hacia ese arco. Las posiciones son ilustrativas: muestran tendencias, no jugadas exactas.</p>
+    <nav class="tabs" id="tabs" aria-label="Jugadas"></nav>
+    <div class="main">
+      <section class="board" aria-label="Pizarra">
+        <div class="boardhead">
+          <h2 id="sceneTitle">—</h2>
+          <div class="legend">
+            <span><i class="sw" style="background:var(--sc)"></i>Santa Cruz</span>
+            <span><i class="sw" style="background:var(--riv)"></i>Rangers / rival</span>
+            <span><i class="ln"></i>Pase</span>
+            <span><i class="ln" style="border-top-style:dashed;border-color:var(--sc)"></i>Desmarque</span>
+            <span><i class="ln" style="border-top-style:dotted;border-color:var(--hot);border-top-width:3px"></i>Presión</span>
+          </div>
+        </div>
+        <svg class="pitch" id="pitch" viewBox="-4 -4 113 76" role="img" aria-label="Cancha con la jugada animada"></svg>
+        <div class="caption" aria-live="polite"><span class="step" id="stepLbl">1/1</span><p id="cap">—</p></div>
+        <div class="controls">
+          <button class="ctl" id="bPrev" type="button" aria-label="Paso anterior">◀</button>
+          <button class="ctl primary" id="bPlay" type="button">Pausa</button>
+          <button class="ctl" id="bNext" type="button" aria-label="Paso siguiente">▶</button>
+          <button class="ctl" id="bRestart" type="button">Repetir</button>
+          <label class="speed" for="speed">Velocidad
+            <select id="speed"><option value="0.6">Lenta</option><option value="1" selected>Normal</option><option value="1.6">Rápida</option></select>
+          </label>
+          <div class="dots" id="dots"></div>
+        </div>
+      </section>
+      <aside class="sheet" aria-label="Ficha de la jugada">
+        <div><h3>Qué hace Santa Cruz</h3><ul id="sWhat"></ul></div>
+        <div><h3 class="g">Dónde se vio</h3><ul id="sEv"></ul></div>
+        <div><h3 class="k">Qué hacer desde Rangers</h3><ul id="sCounter"></ul></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec" id="individual">
+    <div class="sh"><span class="n">06</span><h2>Análisis individual</h2></div>
+    <p class="lead">Edad y altura según ESPN; partidos, minutos, goles y tarjetas de liga según Soccerway. Amenaza = peso del jugador en el plan de Santa Cruz.</p>
+    <div class="card tw">
+      <table class="ev">
+        <thead><tr><th>Jugador</th><th>Pos.</th><th class="n">Edad</th><th class="n">Alt.</th><th class="n">PJ</th><th class="n">Min</th><th class="n">G</th><th class="n">TA/TR</th><th>Amenaza</th><th>Perfil y cómo neutralizarlo</th></tr></thead>
+        <tbody>
+          <tr><td><b>D. Arias</b></td><td>DC</td><td class="n">26</td><td class="n">1,83</td><td class="n">24</td><td class="n">1.817</td><td class="n">17</td><td class="n">3/0</td><td><span class="lvl a">Alta</span></td><td>14 goles en sus primeros 14 partidos; 3 en los 10 siguientes. 6 de penal. Busca el contacto en el área: defenderlo de pie.</td></tr>
+          <tr><td><b>D. Plaza</b></td><td>MC</td><td class="n">23</td><td class="n">—</td><td class="n">28</td><td class="n">2.450</td><td class="n">1</td><td class="n">5/0</td><td><span class="lvl a">Alta</span></td><td>Eje y organizador, titular en todo el ciclo de Giovagnoli; cabezazo en Temuco. Presión encima en cada salida.</td></tr>
+          <tr><td><b>J. Dobboletta</b></td><td>ARQ</td><td class="n">33</td><td class="n">1,85</td><td class="n">28</td><td class="n">2.520</td><td class="n">—</td><td class="n">2/0</td><td><span class="lvl m">Media</span></td><td>Capitán. Reanuda rápido en largo; inseguro en algún centro (U. Española). Cargarlo en el juego aéreo.</td></tr>
+          <tr><td><b>G. Alucema</b></td><td>MC/DFC</td><td class="n">34</td><td class="n">1,80</td><td class="n">27</td><td class="n">2.175</td><td class="n">1</td><td class="n">6/1</td><td><span class="lvl m">Media</span></td><td>Polivalente; marcó en Copiapó. Veterano: sacarlo a correr hacia su arco.</td></tr>
+          <tr><td><b>F. Orellana</b></td><td>MC</td><td class="n">26</td><td class="n">—</td><td class="n">19</td><td class="n">1.102</td><td class="n">3</td><td class="n">4/0</td><td><span class="lvl m">Media</span></td><td>Suplente que define: gol de cabeza a Rangers en la ida. Marca fija en córners si entra.</td></tr>
+          <tr><td><b>N. Zeineddin</b></td><td>DC</td><td class="n">26</td><td class="n">—</td><td class="n">27</td><td class="n">898</td><td class="n">2</td><td class="n">3/0</td><td><span class="lvl m">Media</span></td><td>Primer recambio de ataque. Volea tras córner en Iquique.</td></tr>
+          <tr><td><b>D. Tati</b></td><td>LD</td><td class="n">24</td><td class="n">1,73</td><td class="n">27</td><td class="n">1.994</td><td class="n">0</td><td class="n">7/0</td><td><span class="lvl b">Débil</span></td><td>Por su lado entraron los goles de San Marcos y Temuco. Atacarlo en 2 contra 1 y con centros.</td></tr>
+          <tr><td><b>B. Camisassa</b></td><td>DFC</td><td class="n">29</td><td class="n">—</td><td class="n">19</td><td class="n">1.604</td><td class="n">0</td><td class="n">8/1</td><td><span class="lvl b">Débil</span></td><td>El más amonestado del plantel; autogol en Recoleta. Hacerlo defender en carrera.</td></tr>
+          <tr><td><b>E. Flores</b></td><td>DFC</td><td class="n">34</td><td class="n">1,75</td><td class="n">16</td><td class="n">1.138</td><td class="n">0</td><td class="n">5/1</td><td><span class="lvl b">Débil</span></td><td>Central bajo y veterano; roja ante Magallanes por insultos. Pelotas a la espalda y duelos aéreos.</td></tr>
+          <tr><td><b>N. Romero</b></td><td>LI</td><td class="n">26</td><td class="n">1,73</td><td class="n">13</td><td class="n">1.032</td><td class="n">0</td><td class="n">2/1</td><td><span class="lvl b">Débil</span></td><td>Expulsado por un codazo ante U. Española. Bajo en el segundo palo.</td></tr>
+          <tr><td><b>D. Acevedo</b></td><td>MC</td><td class="n">25</td><td class="n">1,73</td><td class="n">17</td><td class="n">744</td><td class="n">0</td><td class="n">0/0</td><td><span class="lvl b">Baja</span></td><td>Titular recién en los dos últimos partidos; poca influencia ofensiva.</td></tr>
+          <tr><td><b>N. Barrios</b></td><td>EXT</td><td class="n">23</td><td class="n">—</td><td class="n">26</td><td class="n">2.037</td><td class="n">1</td><td class="n">3/0</td><td><span class="lvl b">Baja</span></td><td>Trabaja en banda y baja a defender; llega poco al gol (1-0 en Curicó).</td></tr>
+          <tr><td><b>C. Moreno</b></td><td>EXT</td><td class="n">—</td><td class="n">1,80</td><td class="n">13</td><td class="n">503</td><td class="n">0</td><td class="n">0/0</td><td><span class="lvl b">Baja</span></td><td>Titular en Copiapó; puede alternar con Brito o Islame (35 años, 1,83 m).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3 class="ct">El entrenador: Dalcio Giovagnoli</h3>
+      <ul class="bl">
+        <li><b>Conoce a Rangers:</b> lo dirigió en 2012-2013 (semifinal del Clausura) y en 2023 (salió tras ocho meses, con el equipo 13º). Su ayudante, Damián Ledesma, fue central de Rangers en 2012.</li>
+        <li><b>Perfil:</b> equipos sin estrellas, rendimiento colectivo y solidez defensiva. Campeón con Cobresal (2015) y clasificó a Temuco a la Sudamericana (2017).</li>
+        <li><b>En Santa Cruz:</b> 18 partidos, 3 ganados, 8 empates y 7 derrotas (0,94 puntos por partido). Mejoró la defensa, no el ataque.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="datos">
+    <div class="sh"><span class="n">07</span><h2>Datos</h2></div>
+    <div class="kpis">
+      <div class="kpi"><b>4-12-13</b><span>G-E-P en liga</span></div>
+      <div class="kpi"><b>29-43</b><span>Goles a favor y en contra</span></div>
+      <div class="kpi"><b>1/14</b><span>Victorias de local</span></div>
+      <div class="kpi"><b>0-2-10</b><span>Si el rival anota primero</span></div>
+      <div class="kpi"><b>34%</b><span>Goles de pelota detenida</span></div>
+      <div class="kpi"><b>3,3</b><span>Goles por partido vs Rangers (últimos 10)</span></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3 class="ct">Goles por tramo de 15 minutos</h3>
+        <p class="note">Rojo: recibidos. Verde azulado: anotados. Solo goles con minuto conocido (27 a favor, 41 en contra).</p>
+        <div class="div" id="chTramos" role="img" aria-label="Goles a favor y en contra por tramo"></div>
+      </div>
+      <div class="card">
+        <h3 class="ct">Cómo recibe los goles</h3>
+        <p class="note">Los 18 goles en contra (de 43) cuya jugada describen las crónicas.</p>
+        <div class="hb" id="chTipos" role="img" aria-label="Tipos de goles recibidos"></div>
+      </div>
+      <div class="card">
+        <h3 class="ct">Cómo hace sus goles</h3>
+        <p class="note">Sus 29 goles de liga.</p>
+        <div class="hb" id="chGF" role="img" aria-label="Tipos de goles a favor"></div>
+      </div>
+      <div class="card">
+        <h3 class="ct">Titulares con Giovagnoli</h3>
+        <p class="note">Partidos como titular en las 14 alineaciones confirmadas desde mayo.</p>
+        <div class="hb" id="chStarts" role="img" aria-label="Titularidades con Giovagnoli"></div>
+      </div>
+      <div class="card">
+        <h3 class="ct">Splits</h3>
+        <div class="tw"><table class="ev">
+          <thead><tr><th>Corte</th><th class="n">PJ</th><th class="n">G</th><th class="n">E</th><th class="n">P</th><th class="n">GF</th><th class="n">GC</th><th class="n">Pts</th></tr></thead>
+          <tbody>
+            <tr><td>De local</td><td class="n">14</td><td class="n">1</td><td class="n">8</td><td class="n">5</td><td class="n">15</td><td class="n">21</td><td class="n">11</td></tr>
+            <tr><td>De visita</td><td class="n">15</td><td class="n">3</td><td class="n">4</td><td class="n">8</td><td class="n">14</td><td class="n">22</td><td class="n">13</td></tr>
+            <tr><td>Últimos 10</td><td class="n">10</td><td class="n">1</td><td class="n">5</td><td class="n">4</td><td class="n">5</td><td class="n">9</td><td class="n">8</td></tr>
+            <tr><td>Anota primero</td><td class="n">10</td><td class="n">4</td><td class="n">3</td><td class="n">3</td><td class="n">—</td><td class="n">—</td><td class="n">15</td></tr>
+            <tr class="bad"><td>Recibe primero</td><td class="n">12</td><td class="n">0</td><td class="n">2</td><td class="n">10</td><td class="n">—</td><td class="n">—</td><td class="n">2</td></tr>
+            <tr><td>Armijo (fechas 1-8)</td><td class="n">8</td><td class="n">1</td><td class="n">3</td><td class="n">4</td><td class="n">12</td><td class="n">16</td><td class="n">6</td></tr>
+            <tr><td>Garrido (interino)</td><td class="n">3</td><td class="n">0</td><td class="n">1</td><td class="n">2</td><td class="n">2</td><td class="n">5</td><td class="n">1</td></tr>
+            <tr><td>Giovagnoli</td><td class="n">18</td><td class="n">3</td><td class="n">8</td><td class="n">7</td><td class="n">15</td><td class="n">22</td><td class="n">17</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="card">
+        <h3 class="ct">Historial contra Rangers</h3>
+        <p class="note">17 partidos: 7 ganados de Rangers, 5 de Santa Cruz, 5 empates. Rangers ganó sus últimas tres visitas.</p>
+        <div class="tw"><table class="ev">
+          <thead><tr><th>Fecha</th><th>Partido</th><th>Rangers</th></tr></thead>
+          <tbody>
+            <tr><td class="d">07-06-2026</td><td>Rangers 0-1 Santa Cruz</td><td><span class="res D">D</span></td></tr>
+            <tr><td class="d">12-07-2025</td><td>Rangers 2-2 Santa Cruz</td><td><span class="res E">E</span></td></tr>
+            <tr><td class="d">23-02-2025</td><td>Santa Cruz 0-3 Rangers</td><td><span class="res V">V</span></td></tr>
+            <tr><td class="d">17-11-2024</td><td>Rangers 2-2 Santa Cruz</td><td><span class="res E">E</span></td></tr>
+            <tr><td class="d">12-11-2024</td><td>Santa Cruz 1-2 Rangers</td><td><span class="res V">V</span></td></tr>
+            <tr><td class="d">28-09-2024</td><td>Rangers 1-1 Santa Cruz</td><td><span class="res E">E</span></td></tr>
+            <tr><td class="d">14-05-2024</td><td>Santa Cruz 2-4 Rangers</td><td><span class="res V">V</span></td></tr>
+            <tr><td class="d">09-07-2023</td><td>Rangers 2-1 Santa Cruz</td><td><span class="res V">V</span></td></tr>
+            <tr><td class="d">20-02-2023</td><td>Santa Cruz 2-2 Rangers</td><td><span class="res E">E</span></td></tr>
+            <tr><td class="d">06-09-2022</td><td>Santa Cruz 2-1 Rangers</td><td><span class="res D">D</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec plan" id="plan">
+    <div class="sh"><span class="n">08</span><h2>Plan de partido para Rangers</h2></div>
+    <div class="grid2">
+      <div class="card">
+        <h3 class="ct">Con balón</h3>
+        <ol>
+          <li><b>Paciencia y amplitud.</b> Mover el bloque de lado a lado y cambiar de frente hacia el carril de Tati.</li>
+          <li><b>Sobrecarga por izquierda.</b> Lateral izquierdo alto y extremo fijando a Tati; diagonales hacia adentro.</li>
+          <li><b>Centros al segundo palo</b> con un rematador de cabeza y dos volantes en la frontal para la segunda pelota.</li>
+          <li><b>Cargar a Dobboletta</b> en cada centro y córner.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3 class="ct">Sin balón</h3>
+        <ol>
+          <li><b>Presión a la salida</b> con un hombre sobre Plaza: obligarlo a jugar con la pelota.</li>
+          <li><b>Duelos aéreos ganados</b> contra el pelotazo a Arias y control de la segunda pelota.</li>
+          <li><b>Arias de pie:</b> cero faltas en el área; mejor el remate lejano que el penal.</li>
+          <li><b>Córners:</b> marca fija a Plaza, Orellana y Arias; despejes a los costados.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3 class="ct">Gestión por minutos</h3>
+        <ol>
+          <li><b>0'-30':</b> evitar el error temprano; Santa Cruz anota más en el primer tiempo.</li>
+          <li><b>31'-45':</b> subir la intensidad: 10 de sus goles en contra llegaron en ese tramo.</li>
+          <li><b>46'-75':</b> esperar el primer cambio de Giovagnoli (~60') y su paso a 4-5-1 si va arriba.</li>
+          <li><b>76'-90+:</b> cambios ofensivos ya hechos; 10 de sus goles en contra llegaron desde el 76'.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3 class="ct">Escenarios de marcador</h3>
+        <ol>
+          <li><b>Si Rangers anota primero:</b> Santa Cruz nunca le dio vuelta un partido a un rival que anotó primero (0-2-10). Seguir presionando: necesita salir y es peor con la pelota.</li>
+          <li><b>Si Santa Cruz anota:</b> reanudar rápido y presionar los 5 minutos siguientes; concedió en ese tramo 7 veces.</li>
+          <li><b>0-0 al 60':</b> anticipar los cambios; su cierre es el peor tramo defensivo.</li>
+          <li><b>Disciplina:</b> sin hinchas propios y con presión total, evitar el roce; Santa Cruz suma 4 expulsiones en liga.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="anexo">
+    <div class="sh"><span class="n">09</span><h2>Anexo</h2></div>
+    <div class="card">
+      <h3 class="ct">Temporada completa</h3>
+      <div class="tw scroll"><table class="ev" id="tSeason">
+        <thead><tr><th>F</th><th>Día</th><th>Rival</th><th>Cond.</th><th>Marcador</th><th>Res.</th><th>DT</th><th>Goles de Santa Cruz</th><th>Goles en contra</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3 class="ct">Pendiente de validar con video</h3>
+        <ul class="bl">
+          <li>Lado y pierna de los penales de Arias, y si Dobboletta ataja penales.</li>
+          <li>Ejecutor actual de los córners (en la ida fue Hugo Herrera, hoy suplente) y su marca en córners en contra: zonal o individual.</li>
+          <li>Altura de la línea defensiva en los dos últimos partidos y gatillos de presión.</li>
+          <li>Cómo fueron los 12 goles en contra sin detalle en las crónicas.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="ct">Metodología</h3>
+        <p class="foot">No hay datos de tracking públicos de la Primera B. Base: resultados de toda la temporada, informes arbitrales oficiales de la ANFP (alineaciones, minutos, cambios y tarjetas), estadísticas de Soccerway y ESPN, y crónicas de prensa. Algunas crónicas automáticas traen errores de minutos o cambios; ante choques se usó el informe arbitral. Las posiciones en la pizarra son ilustrativas.</p>
+        <p class="foot">Fuentes: <a href="https://ara.soccerway.com/team/deportes-santa-cruz/b7yIrwa0/squad" target="_blank" rel="noopener">Soccerway</a> · <a href="https://espndeportes.espn.com/futbol/equipo/plantel/_/id/19198/deportes_santa_cruz" target="_blank" rel="noopener">ESPN</a> · <a href="https://starting11.com/deportes-santa-cruz/fixtures" target="_blank" rel="noopener">Starting11</a> · <a href="https://www.campeonatochileno.cl/wp-content/uploads/2026/06/Informe-Arbitro-RANGERS-DEPORTES-SANTA-CRUZ.pdf" target="_blank" rel="noopener">Informes ANFP</a> · <a href="https://www.elrancaguino.cl/2026/10/25/deportes-santa-cruz-iguala-ante-copiapo-y-queda-a-un-paso-de-asegurar-la-permanencia/" target="_blank" rel="noopener">El Rancagüino</a> · <a href="https://gigantedeportivo.cl/rangers-con-altas-y-bajas-para-proximo-duelo-en-liga-de-ascenso/" target="_blank" rel="noopener">Gigantedeportivo</a> · <a href="https://pasionporlosdeportes.cl/podra-rangers-contar-con-sus-hinchas-en-santa-cruz/" target="_blank" rel="noopener">Pasión por los Deportes</a> · <a href="https://www.cooperativa.cl/noticias/deportes/futbol/liga-de-ascenso/tribunal-resolvio-un-capitulo-del-escritoriazo-del-ascenso/2026-10-26/171312.html" target="_blank" rel="noopener">Cooperativa</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+// ---------- gráficos ----------
+const mk = (t, c) => { const e = document.createElement(t); if (c) e.className = c; return e; };
+const tramos = [["0-15",5,4],["16-30",3,5],["31-45",8,10],["46-60",4,6],["61-75",4,6],["76-90+",3,10]];
+const d = document.getElementById('chTramos'); const mx = Math.max(...tramos.flatMap(x => [x[1], x[2]]));
+const h = mk('div','r'); const h1 = mk('div','hd'); h1.textContent = 'En contra'; h1.style.textAlign = 'right'; const h2 = mk('div','lab'); h2.textContent = 'Minuto'; const h3 = mk('div','hd'); h3.textContent = 'A favor'; h.append(h1,h2,h3); d.appendChild(h);
+tramos.forEach(([l,f,c]) => { const r = mk('div','r'); const a = mk('div','l'); const ac = mk('span'); ac.textContent = c; const ab = mk('div','bar'); ab.style.width = (c/mx*85)+'%'; ab.style.background = 'var(--bad)'; a.append(ac,ab);
+  const lb = mk('div','lab'); lb.textContent = l; const b = mk('div','rt'); const bb = mk('div','bar'); bb.style.width = (f/mx*85)+'%'; bb.style.background = 'var(--sc)'; const bc = mk('span'); bc.textContent = f; b.append(bb,bc); r.append(a,lb,b); d.appendChild(r); });
+const hb = (id, rows, color) => { const el = document.getElementById(id); const m = Math.max(...rows.map(x => x[1])); rows.forEach(([n,v],i) => { const r = mk('div','r'); const s = mk('span'); s.textContent = n; const t = mk('div','tr'); const f = mk('div','fl'); f.style.width = (v/m*100)+'%'; f.style.background = typeof color === 'function' ? color(i) : color; t.appendChild(f); const b = mk('b'); b.textContent = v; r.append(s,t,b); el.appendChild(r); }); };
+hb('chTipos', [["Centro al área o cabezazo",6],["Remate de media distancia o tras diagonal",4],["Penal",3],["Remate sin ubicación precisa",2],["Pase al espacio",1],["Rebote en el área",1],["Autogol",1]], i => i < 2 ? 'var(--bad)' : 'var(--muted)');
+hb('chGF', [["Penal",8],["Jugada (sin más detalle)",12],["Remate de media distancia",2],["Remate sin ubicación",2],["Cabezazo",2],["Volea tras córner",1],["Sin dato",2]], i => i === 0 ? 'var(--hot)' : 'var(--sc)');
+hb('chStarts', [["Dobboletta",14],["Tati",14],["Plaza",14],["Barrios",11],["Alucema",11],["Cavero",10],["Alvarado",9],["D. Arias",9],["Flores",8],["Quiroz",7],["Orellana",7],["Herrera",6],["Romero",5],["Camisassa",5],["Zeineddin",5]], 'var(--sc)');
+
+// ---------- temporada ----------
+const S = [
+[1,"20 feb","San Marcos","V","1-1","E","Armijo","—","—"],
+[2,"27 feb","Cobreloa","L","0-0","E","Armijo","",""],
+[3,"9 mar","S. Wanderers","V","2-3","D","Armijo","Orellana 9' (p), D. Arias 39'","13', 33', 83'"],
+[4,"15 mar","Puerto Montt","V","0-2","D","Armijo","","39' (centro), 78' (p)"],
+[5,"21 mar","Curicó","L","4-2","V","Armijo","D. Arias 11', 14' (p), 50', 54'","64', 83'"],
+[6,"30 mar","San Luis","V","2-3","D","Armijo","D. Arias 31', 45+4 (p)","34' (centro), 48', 67'"],
+[7,"11 abr","Magallanes","L","2-2","E","Armijo","D. Arias 78' (p), 90+5 (p)","71', 90' (p)"],
+[8,"19 abr","U. San Felipe","L","1-3","D","Armijo","D. Arias 45+1 (p)","25' (cabeza), 89', 90+6"],
+[9,"27 abr","U. Española","V","0-2","D","Garrido","","18', 78'"],
+[10,"2 may","Iquique","L","2-2","E","Garrido","D. Arias 11', 18'","45', 55'"],
+[11,"9 may","Recoleta","V","0-1","D","Garrido","","17' (autogol)"],
+[12,"19 may","Temuco","L","2-3","D","Giovagnoli","Pinto 23' (p), Herrera 30'","15', 35', 52'"],
+[13,"24 may","Antofagasta","V","1-1","E","Giovagnoli","D. Arias","—"],
+[14,"2 jun","Copiapó","L","1-1","E","Giovagnoli","D. Arias 42'","55'"],
+[15,"7 jun","Rangers","V","1-0","V","Giovagnoli","Orellana 70' (cabeza)",""],
+[17,"25 jul","Cobreloa","V","2-4","D","Giovagnoli","D. Arias 31', Quiroz 61'","22', 33', 80', 83'"],
+[18,"2 ago","S. Wanderers","L","1-3","D","Giovagnoli","Zeineddin 57'","18', 47', 81'"],
+[19,"8 ago","Puerto Montt","L","0-0","E","Giovagnoli","",""],
+[20,"14 ago","Curicó","V","2-1","V","Giovagnoli","Barrios 42', D. Arias 87'","58' (p)"],
+[21,"17 ago","San Luis","L","0-2","D","Giovagnoli","","42', 45+3"],
+[22,"22 ago","Magallanes","V","0-1","D","Giovagnoli","","74'"],
+[23,"29 ago","U. San Felipe","V","0-0","E","Giovagnoli","",""],
+[24,"5 sep","U. Española","L","1-1","E","Giovagnoli","Pinto 59'","14'"],
+[25,"10 sep","Iquique","V","1-0","V","Giovagnoli","Zeineddin 73'",""],
+[26,"14 sep","Recoleta","L","0-0","E","Giovagnoli","",""],
+[16,"4 oct","San Marcos","L","1-2","D","Giovagnoli","D. Arias 13' (p)","14', 35'"],
+[27,"10 oct","Temuco","V","1-2","D","Giovagnoli","Plaza 62'","42', 65'"],
+[28,"18 oct","Antofagasta","L","0-0","E","Giovagnoli","",""],
+[29,"24 oct","Copiapó","V","1-1","E","Giovagnoli","Alucema 32'","69'"]
+];
+const tb = document.querySelector('#tSeason tbody');
+S.forEach(r => { const tr = mk('tr'); r.forEach((v,i) => { const td = mk('td'); if (i < 2) td.className = 'n'; if (i === 3) v = v === 'L' ? 'Local' : 'Visita';
+  if (i === 5) { const s = mk('span', 'res ' + v); s.textContent = v; td.appendChild(s); } else td.textContent = v; tr.appendChild(td); }); tb.appendChild(tr); });
+})();
+
+// ---------- once probable ----------
+(() => {
+  const NS = 'http://www.w3.org/2000/svg', svg = document.getElementById('lineup');
+  const el = (t, a, p) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); (p || svg).appendChild(n); return n; };
+  el('rect', {x:0, y:0, width:100, height:72, rx:2, style:'fill:var(--pitch)'});
+  const g = el('g', {style:'fill:none;stroke:var(--line);stroke-width:.4'});
+  el('rect', {x:2, y:2, width:96, height:68}, g); el('line', {x1:2, y1:36, x2:98, y2:36}, g); el('circle', {cx:50, cy:36, r:8}, g);
+  el('rect', {x:28, y:56, width:44, height:14}, g); el('rect', {x:28, y:2, width:44, height:14}, g);
+  const P = [["Dobboletta","ARQ",50,64],["Romero","LI",14,51],["Flores","DFC",37,54],["Camisassa","DFC",63,54],["Tati","LD",86,51],
+             ["Alucema","MC",28,38],["Plaza","MC",50,41],["Acevedo","MC",72,38],["Barrios","EXT",18,20],["D. Arias","DC",50,14],["Moreno","EXT",82,20]];
+  P.forEach(([n, p, x, y]) => {
+    el('circle', {cx:x, cy:y, r:3.6, style:'fill:var(--sc);stroke:var(--bg);stroke-width:.5'});
+    el('text', {x, y:y+1.1, 'text-anchor':'middle', style:'fill:var(--sc-ink);font:700 2.4px var(--body)'}).textContent = p;
+    el('text', {x, y:y+6.6, 'text-anchor':'middle', style:'fill:var(--ink);font:700 3.1px var(--body);paint-order:stroke;stroke:var(--pitch);stroke-width:.7px'}).textContent = n;
+  });
+})();
+</script>
+
+<script>
+(() => {
+const NAMES = {dob:'Dobboletta', tat:'Tati', cam:'Camisassa', flo:'Flores', rom:'Romero', plz:'Plaza', alu:'Alucema', ace:'Acevedo', bar:'Barrios', ari:'D. Arias', mor:'Moreno'};
+const SC = Object.keys(NAMES);
+const RIV = ['rk','rd1','rd2','rd3','rd4','rm1','rm2','rm3','rm4','rf1','rf2'];
+
+// Santa Cruz defiende el arco de la izquierda (x=0). Su banda derecha es la de abajo (y alto).
+const SCENES = [
+{ id:'bloque', group:'Sin balón', title:'Bloque bajo 4-5-1',
+  init:{dob:[3,34],rom:[16,12],flo:[14,27],cam:[14,41],tat:[16,56],bar:[28,10],alu:[27,25],plz:[25,34],ace:[27,43],mor:[28,58],ari:[42,34],
+        rk:[100,34],rd1:[62,8],rd2:[66,26],rd3:[66,42],rd4:[62,60],rm1:[46,14],rm2:[50,30],rm3:[50,40],rm4:[46,54],rf1:[30,30],rf2:[30,40]},
+  frames:[
+    {ball:{at:'rd2'}, shapes:[{ids:['rom','flo','cam','tat'],lbl:'4'},{ids:['bar','alu','plz','ace','mor'],lbl:'5'},{ids:['ari'],lbl:'1'}],
+     cap:'Con el empate a su favor, lo esperable es esto: 4-5-1 bajo, los extremos en la línea de volantes y Diego Arias solo arriba. Así jugó el segundo tiempo en Copiapó.'},
+    {pos:{rm1:[38,12],rd1:[50,5],bar:[32,11],rom:[20,13],alu:[30,22],plz:[27,30],ace:[28,38],mor:[30,52],flo:[16,25],cam:[16,37],tat:[18,50],ari:[44,28]}, ball:{at:'rm1'},
+     arrows:[{t:'pass',a:'rd2',b:'rm1'},{t:'run',a:'rd1'}], cap:'Bascula en bloque hacia la pelota. Las líneas quedan juntas: entre volantes y defensas hay poco espacio.'},
+    {pos:{rm2:[44,30],rm4:[40,56],rd4:[52,64]}, ball:{at:'rm2'}, arrows:[{t:'pass',a:'rm1',b:'rm2'}], cap:'La pelota vuelve atrás para cambiar de frente.'},
+    {pos:{rm4:[34,58],rd4:[42,65],mor:[30,57],tat:[18,56],ace:[28,46],plz:[26,36],alu:[28,26],bar:[30,14],rom:[18,14],flo:[16,29],cam:[16,43]}, ball:{at:'rm4'}, air:true,
+     arrows:[{t:'pass',a:'rm2',b:'rm4'},{t:'run',a:'rd4'}], zones:[{x:14,y:48,w:24,h:20,label:'Carril de Tati'}],
+     cap:'Si el cambio de frente es rápido, el bloque llega justo y Tati queda mano a mano por su costado, el más débil de Santa Cruz.'}
+  ],
+  what:['4-5-1 bajo para defender un resultado; 4-3-3 cuando tiene que ganar.','Con Giovagnoli: 6 vallas invictas y 9 goles recibidos en los últimos 10 partidos.','Le basta el empate: no va a salir a buscar.'],
+  ev:['Copiapó 1-1: Copiapó tuvo el 59% de la pelota y lo encerró en el segundo tiempo.','Antofagasta 0-0, Recoleta 0-0, Puerto Montt 0-0 en casa.'],
+  counter:['Circulación rápida de lado a lado para que el bloque llegue tarde.','Cambios de frente hacia el carril de Tati (izquierda de Rangers).','No forzar por dentro: es donde más gente junta.']},
+
+{ id:'salida', group:'Con balón', title:'Salida corta y pelota a Arias',
+  init:{dob:[4,34],flo:[14,24],cam:[14,44],rom:[26,8],tat:[26,60],plz:[26,34],alu:[38,26],ace:[38,44],bar:[56,10],mor:[56,58],ari:[60,34],
+        rk:[101,34],rd1:[78,10],rd2:[80,28],rd3:[80,40],rd4:[78,58],rm1:[54,18],rm2:[50,30],rm3:[50,40],rm4:[54,50],rf1:[30,28],rf2:[30,42]},
+  frames:[
+    {ball:{at:'dob'}, cap:'Dobboletta sale corto con los centrales abiertos y Plaza de eje.'},
+    {pos:{plz:[22,34],rf1:[24,30]}, ball:{at:'flo'}, arrows:[{t:'pass',a:'dob',b:'flo'},{t:'run',a:'plz'}], cap:'Plaza baja a recibir. Fue titular en todos los partidos de Giovagnoli y por él pasan los "circuitos".'},
+    {pos:{plz:[22,36],rf1:[22,32],rf2:[22,40],rm2:[34,30],rm3:[34,40]}, ball:{at:'plz'}, arrows:[{t:'pass',a:'flo',b:'plz'},{t:'press',a:'rf1'},{t:'press',a:'rf2'}],
+     zones:[{x:16,y:26,w:14,h:18,label:'Cortar el circuito'}], cap:'Si le tapan a Plaza la salida, el equipo se queda sin ideas. Giovagnoli lo dijo tras el 0-0 con Antofagasta: les cortaron los circuitos.'},
+    {pos:{ari:[70,30],rd2:[76,30]}, ball:{at:'ari'}, air:true, arrows:[{t:'pass',a:'plz',b:'ari'},{t:'run',a:'ari'}], cap:'Plan B: pelotazo a Diego Arias para que la aguante o pelee contra los centrales.'},
+    {pos:{bar:[66,16],mor:[66,52],ari:[72,32]}, ball:{at:'ari'}, arrows:[{t:'run',a:'bar'},{t:'run',a:'mor'}], cap:'Los extremos acompañan cuando Arias gana la primera pelota. Si la pierde, el equipo queda partido.'}
+  ],
+  what:['Salida corta con Plaza de eje y Alucema de apoyo.','Si lo presionan bien, pelotazo a Arias.','Genera poco: 5 goles en sus últimos 10 partidos.'],
+  ev:['Antofagasta 0-0: "Nos cortaron los circuitos" (Giovagnoli).','Plaza fue titular en los 14 partidos de Giovagnoli.'],
+  counter:['Un volante encima de Plaza en cada salida.','Dos centrales fuertes en el juego aéreo contra los pelotazos a Arias.','Ganar la segunda pelota detrás de Arias.']},
+
+{ id:'arias', group:'Con balón', title:'Diego Arias y el penal',
+  init:{dob:[6,34],flo:[30,24],cam:[30,44],rom:[48,8],tat:[48,60],plz:[46,34],alu:[60,26],ace:[60,44],bar:[78,12],mor:[78,56],ari:[82,34],
+        rk:[102,34],rd1:[90,12],rd2:[92,28],rd3:[92,40],rd4:[90,56],rm1:[78,20],rm2:[76,30],rm3:[76,40],rm4:[78,48],rf1:[56,30],rf2:[56,42]},
+  frames:[
+    {ball:{at:'alu'}, cap:'Alucema conduce en tres cuartos. Arias se mueve entre los dos centrales.'},
+    {pos:{ari:[90,36],rd2:[92,32],rd3:[93,40]}, ball:{at:'ari'}, arrows:[{t:'pass',a:'alu',b:'ari'},{t:'run',a:'ari'}], cap:'Recibe de espaldas o en diagonal dentro del área, buscando el contacto.'},
+    {pos:{ari:[94,36],rd3:[94,38]}, ball:{at:'ari'}, zones:[{x:88.5,y:29,w:10,h:12,label:'Falta = penal'}],
+     cap:'Seis de sus 17 goles fueron de penal, y Santa Cruz convirtió 8 penales en la liga. A Magallanes le hizo dos en el mismo partido.'},
+    {cut:true, pos:{ari:[94,34],rd2:[86,26],rd3:[86,42],rd1:[87,18],rd4:[87,50],rm1:[86,22],rm2:[85,30],rm3:[85,38],rm4:[86,46],bar:[86,14],mor:[86,54],alu:[84,34],ace:[80,40],rk:[103.5,34]},
+     ball:{x:94,y:34}, cap:'Lo patea él. Ojo: lleva un solo gol (de penal) en sus últimos 10 partidos. La falta en el área es su mejor oportunidad.'},
+    {ball:{x:104.6,y:31}, arrows:[{t:'pass',a:{x:94,y:34},b:{x:104.6,y:31}}], cap:'En marzo marcó cuatro a Curicó y en total anotó en 11 partidos distintos.'}
+  ],
+  what:['Arias es casi todo el ataque: 17 de 29 goles.','Busca el contacto dentro del área y patea los penales.','En baja: un gol en sus últimos 10.'],
+  ev:['Magallanes 2-2 (abril): dos penales de Arias.','San Marcos 1-2 (octubre): Arias de penal en el 13\'.','8 penales convertidos por Santa Cruz en la liga.'],
+  counter:['Defenderlo de pie, sin ir al suelo dentro del área.','Central pegado y el otro cubriendo la espalda.','Si lo dejas sin pelota, Santa Cruz no tiene otro goleador: el segundo suma 2 goles.']},
+
+{ id:'parado', group:'Con balón', title:'Balón parado ofensivo', names:{bar:'Ejecutor', mor:'Zeineddin'},
+  init:{dob:[6,34],cam:[92,30],flo:[90,40],plz:[94,36],ari:[96,33],alu:[84,26],mor:[84,46],bar:[104.5,0.5],ace:[70,34],tat:[56,54],rom:[56,14],
+        rk:[103,34],rd1:[97,29],rd2:[97,36],rd3:[97,43],rd4:[100,26],rm1:[93,26],rm2:[93,33],rm3:[93,41],rm4:[90,46],rf1:[80,36],rf2:[66,34]},
+  frames:[
+    {ball:{at:'bar'}, cap:'Córner desde la izquierda. Varios a cargar el área y un hombre en la medialuna.'},
+    {pos:{plz:[94,34],cam:[95,29],ari:[97,38]}, ball:{at:'plz'}, air:true, arrows:[{t:'pass',a:'bar',b:'plz'},{t:'run',a:'plz'},{t:'run',a:'cam'}],
+     zones:[{x:89,y:27,w:10,h:14,label:'Cabezazo'}], cap:'Juego aéreo: Plaza (en Temuco) y Orellana (en la ida contra Rangers, 70\') marcaron de cabeza.'},
+    {cut:true, pos:{bar:[104.5,67.5],plz:[92,40],cam:[94,32],ari:[96,36],alu:[86,30],mor:[88,34],rd1:[97,30],rd2:[97,37],rd3:[96,44],rm1:[93,30],rm2:[92,37],rm3:[91,44],rm4:[88,50],rf1:[84,38],rk:[103,34]},
+     ball:{at:'bar'}, cap:'Córner desde la derecha. Un jugador se queda suelto en el borde del área chica.'},
+    {pos:{mor:[90,34]}, ball:{at:'mor'}, air:true, arrows:[{t:'pass',a:'bar',b:'mor'}], cap:'En Iquique, Zeineddin giró dentro del área y metió una volea tras el córner de Pinto: 1-0 en el 73\'.'},
+    {ball:{x:104.6,y:36}, arrows:[{t:'pass',a:'mor',b:{x:104.6,y:36}}], cap:'Con un equipo que hace tan pocos goles, el balón parado es su otra vía además de Arias.'}
+  ],
+  what:['Córners para cabezazos de Plaza, Camisassa u Orellana.','Segunda jugada y volea dentro del área.','Penales y tiros libres cerca del área para Arias.'],
+  ev:['Rangers 0-1 Santa Cruz: Orellana de cabeza (70\').','Temuco 2-1: Plaza de cabeza (62\').','Iquique 0-1: volea de Zeineddin tras córner (73\').'],
+  counter:['Marca fija a Plaza y a Orellana si entra.','Despeje largo y a los costados, nunca al centro del área.','Evitar faltas y córners innecesarios en el cierre.']},
+
+{ id:'derecha', group:'Sus debilidades', weak:true, title:'Su costado derecho (Tati)',
+  init:{dob:[3,34],rom:[18,12],flo:[16,27],cam:[16,41],tat:[20,56],bar:[30,12],alu:[30,26],plz:[28,36],ace:[30,46],mor:[34,58],ari:[46,34],
+        rk:[100,34],rd1:[60,8],rd2:[66,26],rd3:[66,42],rd4:[56,62],rm1:[44,16],rm2:[48,30],rm3:[44,44],rm4:[36,60],rf1:[26,30],rf2:[28,40]},
+  frames:[
+    {ball:{at:'rm3'}, cap:'El rival junta gente por su izquierda, que es el costado derecho de Santa Cruz.'},
+    {pos:{rd4:[34,64],rm4:[28,56],mor:[34,60],tat:[22,56]}, ball:{at:'rm4'}, arrows:[{t:'pass',a:'rm3',b:'rm4'},{t:'run',a:'rd4'}], zones:[{x:16,y:48,w:24,h:20,label:'2 contra 1'}],
+     cap:'Extremo contra Tati y el lateral que pasa por fuera: el extremo de Santa Cruz no siempre llega a tiempo.'},
+    {pos:{rm4:[22,48],tat:[20,52],cam:[18,44],ace:[26,46]}, ball:{at:'rm4'}, arrows:[{t:'run',a:'rm4'}], cap:'Diagonal hacia adentro. Contra San Marcos, Tati y el central no pudieron frenar las diagonales de Reyes.'},
+    {ball:{x:-1,y:30}, arrows:[{t:'pass',a:'rm4',b:{x:-1,y:30}}], cap:'Remate cruzado al palo lejano: el 1-1 de San Marcos en el 14\', dos minutos después del gol de Arias.'},
+    {cut:true, pos:{rm3:[40,42],rf2:[30,48],tat:[24,54],cam:[20,42],flo:[18,30],plz:[30,36],ace:[32,46],dob:[4,34]}, ball:{at:'rm3'}, cap:'Otra variante por el mismo carril: el pase al espacio a la espalda del lateral.'},
+    {pos:{rf2:[14,46],tat:[18,52],cam:[16,44]}, ball:{at:'rf2'}, arrows:[{t:'pass',a:'rm3',b:'rf2'},{t:'run',a:'rf2'}], cap:'Así llegó el 1-2 de Maidana tras un ataque por ese costado, definido entre las piernas de Dobboletta. Cuadra (Temuco) también le hizo un gol conduciendo por ahí.'}
+  ],
+  what:['El lateral derecho Tati queda expuesto al 2 contra 1.','Al central de ese lado le cuesta cerrar las diagonales.'],
+  ev:['Santa Cruz 1-2 San Marcos: los dos goles por ese sector (14\' y 35\').','Santa Cruz 2-3 Temuco: Cuadra, conducción y remate por ese costado (52\').'],
+  counter:['Cargar el carril izquierdo de Rangers con lateral y extremo.','Diagonales del extremo hacia el centro y remate al palo lejano.','Pases a la espalda de Tati cuando sube.']},
+
+{ id:'frontal', group:'Sus debilidades', weak:true, title:'Centros y segundas pelotas',
+  init:{dob:[3,34],rom:[14,14],flo:[12,28],cam:[12,40],tat:[14,54],bar:[24,14],alu:[22,28],plz:[20,36],ace:[22,46],mor:[24,56],ari:[38,34],
+        rk:[100,34],rd1:[48,8],rd2:[56,26],rd3:[56,42],rd4:[48,60],rm1:[32,16],rm2:[34,30],rm3:[34,40],rm4:[32,52],rf1:[16,32],rf2:[16,42]},
+  frames:[
+    {ball:{at:'rd4'}, cap:'El rival centra desde la banda. Centros y cabezazos son la vía más repetida de los goles que recibió (6 de 18 con detalle).'},
+    {pos:{rf2:[10,40],cam:[10,38],flo:[10,30]}, ball:{x:12,y:36}, air:true, arrows:[{t:'pass',a:'rd4',b:{x:12,y:36}}], cap:'La defensa despeja, pero corto y hacia el centro.'},
+    {pos:{rm2:[22,32],plz:[18,34],alu:[20,26]}, ball:{at:'rm2'}, air:true, arrows:[{t:'pass',a:{x:12,y:36},b:'rm2'},{t:'run',a:'rm2'}], zones:[{x:16,y:24,w:14,h:20,label:'Frontal libre'}],
+     cap:'La segunda pelota cae en la frontal y nadie sale a cerrar. Los volantes quedaron metidos dentro del área.'},
+    {ball:{x:-1,y:31.5}, arrows:[{t:'pass',a:'rm2',b:{x:-1,y:31.5}}], cap:'Remate de primera. Así le hicieron goles Parada (San Luis, desde la entrada del área), Fredes (Magallanes, desde fuera) y Cuadra (Temuco, desde el borde del área).'}
+  ],
+  what:['Cuando se encierra, los volantes se meten dentro del área.','Los despejes caen en la frontal.'],
+  ev:['San Luis 0-2: Parada desde la entrada del área (45+3).','Magallanes 1-0: Fredes desde fuera del área (74\').','Temuco 3-2: Cuadra desde el borde del área (52\').','6 de los 18 goles con detalle fueron centros o cabezazos.'],
+  counter:['Tener siempre a dos volantes en la frontal cuando se centra.','Rematadores de media distancia en cancha.','Atacar el rebote de cada centro y cada tiro libre.']},
+
+{ id:'plan', group:'Plan de Rangers', plan:true, title:'Cómo ganarle', rival:'Rangers',
+  init:{dob:[3,34],rom:[16,12],flo:[14,27],cam:[14,41],tat:[16,56],bar:[28,10],alu:[27,25],plz:[25,34],ace:[27,43],mor:[28,58],ari:[44,34],
+        rk:[100,34],rd1:[54,8],rd2:[66,26],rd3:[66,42],rd4:[52,62],rm1:[42,18],rm2:[46,30],rm3:[46,40],rm4:[40,52],rf1:[30,30],rf2:[30,40]},
+  frames:[
+    {ball:{at:'rd2'}, cap:'1) Rangers con la pelota contra el 4-5-1. Con paciencia: el primer gol vale el partido, porque cuando el rival anota primero Santa Cruz no ganó nunca en el año.'},
+    {pos:{rm2:[46,24],rm3:[44,40],plz:[26,36],rd3:[60,42]}, ball:{at:'rm2'}, arrows:[{t:'pass',a:'rd2',b:'rm2'},{t:'press',a:'rm3'}], cap:'2) Atraer por el lado de arriba para mover el bloque.'},
+    {pos:{rm4:[34,58],rd4:[42,64],mor:[30,58],tat:[18,56],ace:[28,46],plz:[26,38],alu:[28,28],bar:[30,14],rom:[18,14],flo:[16,30],cam:[16,44]}, ball:{at:'rm4'}, air:true,
+     arrows:[{t:'pass',a:'rm2',b:'rm4'},{t:'run',a:'rd4'}], zones:[{x:14,y:48,w:24,h:20,label:'Carril de Tati'}], cap:'3) Cambio de frente al carril izquierdo de Rangers: el lado de Tati, por donde más le duele a Santa Cruz.'},
+    {pos:{rd4:[20,64],rm4:[24,56],tat:[16,58],mor:[28,58]}, ball:{at:'rd4'}, arrows:[{t:'pass',a:'rm4',b:'rd4'},{t:'run',a:'rd4'}], cap:'4) El lateral pasa por fuera y llega al fondo.'},
+    {pos:{rm2:[22,34],rf1:[8,30],rf2:[10,40],flo:[8,30],cam:[9,38],plz:[16,38],alu:[18,30]}, ball:{at:'rm2'}, arrows:[{t:'pass',a:'rd4',b:'rm2'},{t:'run',a:'rf1'},{t:'run',a:'rf2'},{t:'run',a:'rm2'}],
+     zones:[{x:16,y:26,w:14,h:18,label:'Pase atrás'}], cap:'5) Pase atrás a la frontal, donde los volantes de Santa Cruz no llegan: remate de primera.'},
+    {ball:{x:-1,y:36}, arrows:[{t:'pass',a:'rm2',b:{x:-1,y:36}}], cap:'6) Si no sale, insistir: 10 de sus 41 goles en contra llegaron desde el 76\', y otros 10 entre el 31\' y el 45\'. Y si San Felipe empata, Rangers necesita ganar por 3 para no ir al desempate.'}
+  ],
+  what:['Bloque bajo, cierra el centro y espera el error.','Le sirve el empate y defiende el resultado desde el inicio.'],
+  ev:['Santa Cruz ganó 1 de 14 partidos de local.','Cuando recibió el primer gol: 0 ganados, 2 empates, 10 derrotas.'],
+  counter:['Paciencia y circulación hasta abrir el carril de Tati.','Centros al área con gente llegando a la segunda pelota.','Cambios ofensivos desde el 60\': el cierre es su peor tramo.','Sin faltas cerca del área: Arias y el balón parado son sus únicas armas.']}
+];
+
+const svg = document.getElementById('pitch');
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs = {}, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; };
+const defs = el('defs', {}, svg);
+[['mPass','var(--ink)'],['mRun','var(--sc)'],['mPress','var(--hot)'],['mRunR','var(--riv)']].forEach(([id, c]) => {
+  const m = el('marker', {id, viewBox:'0 0 10 10', refX:'8', refY:'5', markerWidth:'4', markerHeight:'4', orient:'auto-start-reverse'}, defs);
+  el('path', {d:'M0,0 L10,5 L0,10 z', style:`fill:${c}`}, m);
+});
+const P = el('g', {}, svg);
+el('rect', {x:-4, y:-4, width:113, height:76, style:'fill:var(--pitch)'}, P);
+for (let i = 0; i < 7; i++) if (i % 2) el('rect', {x:i*15, y:0, width:15, height:68, style:'fill:var(--pitch2)'}, P);
+const L = el('g', {style:'fill:none;stroke:var(--line);stroke-width:.35'}, P);
+el('rect', {x:0, y:0, width:105, height:68}, L);
+el('line', {x1:52.5, y1:0, x2:52.5, y2:68}, L);
+el('circle', {cx:52.5, cy:34, r:9.15}, L);
+el('rect', {x:0, y:13.84, width:16.5, height:40.32}, L);
+el('rect', {x:88.5, y:13.84, width:16.5, height:40.32}, L);
+el('rect', {x:0, y:24.84, width:5.5, height:18.32}, L);
+el('rect', {x:99.5, y:24.84, width:5.5, height:18.32}, L);
+el('rect', {x:-2, y:30.34, width:2, height:7.32}, L);
+el('rect', {x:105, y:30.34, width:2, height:7.32}, L);
+el('path', {d:'M16.5,26.7 A9.15,9.15 0 0 1 16.5,41.3'}, L);
+el('path', {d:'M88.5,26.7 A9.15,9.15 0 0 0 88.5,41.3'}, L);
+[[11,34],[94,34],[52.5,34]].forEach(([cx,cy]) => el('circle', {cx, cy, r:.35, style:'fill:var(--line)'}, P));
+el('text', {x:2, y:71, style:'fill:var(--muted);font:600 2.2px var(--body)'}, P).textContent = 'Arco de Santa Cruz';
+el('text', {x:103, y:71, 'text-anchor':'end', style:'fill:var(--muted);font:600 2.2px var(--body)'}, P).textContent = 'Santa Cruz ataca →';
+el('text', {x:2, y:-1.2, style:'fill:var(--muted);font:600 2px var(--body)'}, P).textContent = 'Banda izquierda de Santa Cruz';
+
+const zoneG = el('g', {}, svg), shapeG = el('g', {}, svg), arrowG = el('g', {}, svg), playerG = el('g', {}, svg), ballG = el('g', {}, svg);
+const players = {};
+SC.forEach(id => {
+  const g = el('g', {}, playerG);
+  el('circle', {r:1.9, style:'fill:var(--sc);stroke:var(--bg);stroke-width:.35'}, g);
+  const t = el('text', {y:4.3, 'text-anchor':'middle', style:'fill:var(--ink);font:700 2.1px var(--body);paint-order:stroke;stroke:var(--pitch);stroke-width:.6px'}, g);
+  t.textContent = NAMES[id];
+  players[id] = g;
+});
+RIV.forEach(id => { const g = el('g', {}, playerG); el('circle', {r:1.7, style:'fill:var(--riv);stroke:var(--bg);stroke-width:.35'}, g); players[id] = g; });
+const shadow = el('ellipse', {rx:.9, ry:.45, style:'fill:#000;opacity:0'}, ballG);
+const ball = el('circle', {r:.85, style:'fill:var(--ball);stroke:var(--ball-edge);stroke-width:.3'}, ballG);
+
+SCENES.forEach(s => { let cur = {...s.init}; s.F = s.frames.map(f => { cur = {...cur, ...(f.pos || {})}; return {...f, P:{...cur}}; }); });
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let si = 0, fi = 0, t = 1, phase = 'hold', el_ = 0, playing = true, speed = 1;
+const MOVE = 1300, HOLD = 2800;
+const ease = x => x < .5 ? 2*x*x : 1 - Math.pow(-2*x + 2, 2) / 2;
+const lerp = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+const ballPos = f => f.ball && f.ball.at ? [f.P[f.ball.at][0] + .9, f.P[f.ball.at][1] + .9] : f.ball ? [f.ball.x, f.ball.y] : [52.5, 34];
+const ref = (r, Pm) => typeof r === 'string' ? Pm[r] : [r.x, r.y];
+
+function drawStatic() {
+  const s = SCENES[si], f = s.F[fi], prev = fi > 0 ? s.F[fi - 1] : f;
+  zoneG.innerHTML = ''; arrowG.innerHTML = ''; shapeG.innerHTML = '';
+  (f.zones || []).forEach(z => {
+    el('rect', {x:z.x, y:z.y, width:z.w, height:z.h, rx:1.5, style:'fill:var(--zone);stroke:var(--hot);stroke-width:.3;stroke-dasharray:1 .8'}, zoneG);
+    if (z.label) {
+      const ty = z.y < 4 ? z.y + z.h + 2.6 : z.y - 1;
+      const tx = Math.min(Math.max(z.x + z.w / 2, 8), 97);
+      el('text', {x:tx, y:ty, 'text-anchor':'middle', style:'fill:var(--hot);font:700 2.1px var(--body);paint-order:stroke;stroke:var(--pitch);stroke-width:.6px'}, zoneG).textContent = z.label;
+    }
+  });
+  (f.arrows || []).forEach(a => {
+    const from = a.t === 'pass' ? (typeof a.a === 'string' ? prev.P[a.a] : [a.a.x, a.a.y]) : prev.P[a.a];
+    const to = a.t === 'pass' ? ref(a.b, f.P) : f.P[a.a];
+    if (!from || !to || Math.hypot(to[0]-from[0], to[1]-from[1]) < .5) return;
+    const isR = RIV.includes(a.a);
+    const style = a.t === 'pass' ? 'stroke:var(--ink);stroke-width:.4' : a.t === 'run' ? `stroke:${isR ? 'var(--riv)' : 'var(--sc)'};stroke-width:.45;stroke-dasharray:1.2 .8` : 'stroke:var(--hot);stroke-width:.55;stroke-dasharray:.3 .7;stroke-linecap:round';
+    const mk = a.t === 'pass' ? 'mPass' : a.t === 'run' ? (isR ? 'mRunR' : 'mRun') : 'mPress';
+    const dx = to[0] - from[0], dy = to[1] - from[1], len = Math.hypot(dx, dy);
+    const end = [to[0] - dx * (2.2/len), to[1] - dy * (2.2/len)], st = [from[0] + dx * (1.8/len), from[1] + dy * (1.8/len)];
+    let d;
+    if (a.t === 'pass' && f.air) { const mx = (st[0] + end[0]) / 2 - dy * .12, my = (st[1] + end[1]) / 2 + dx * .12; d = `M${st[0]},${st[1]} Q${mx},${my} ${end[0]},${end[1]}`; }
+    else d = `M${st[0]},${st[1]} L${end[0]},${end[1]}`;
+    el('path', {d, style:`fill:none;${style};opacity:.9`, 'marker-end':`url(#${mk})`}, arrowG);
+  });
+  (f.shapes || []).forEach(sp => {
+    const pts = sp.ids.map(id => f.P[id]);
+    if (pts.length > 1) el('polyline', {points:pts.map(p => p.join(',')).join(' '), style:'fill:none;stroke:var(--sc);stroke-width:.35;opacity:.55;stroke-dasharray:.6 .6'}, shapeG);
+    const top = pts.reduce((a, b) => a[1] < b[1] ? a : b);
+    const cx = pts.reduce((s2, p) => s2 + p[0], 0) / pts.length;
+    el('text', {x:cx, y:Math.max(2.6, top[1] - 3.4), 'text-anchor':'middle', style:'fill:var(--sc);font:700 3.4px var(--display);paint-order:stroke;stroke:var(--pitch);stroke-width:.8px'}, shapeG).textContent = sp.lbl;
+  });
+  document.getElementById('cap').textContent = f.cap;
+  document.getElementById('stepLbl').textContent = `${fi + 1}/${s.F.length}`;
+  document.querySelectorAll('#dots .dot').forEach((d, i) => { d.classList.toggle('on', i === fi); d.setAttribute('aria-current', i === fi ? 'step' : 'false'); });
+}
+function drawDynamic() {
+  const s = SCENES[si], f = s.F[fi], prev = fi > 0 ? s.F[fi - 1] : f;
+  const k = (f.cut || reduce || fi === 0) ? 1 : ease(t);
+  [...SC, ...RIV].forEach(id => {
+    const a = prev.P[id] || f.P[id], b = f.P[id];
+    if (!b) { players[id].setAttribute('visibility', 'hidden'); return; }
+    players[id].setAttribute('visibility', 'visible');
+    const p = lerp(a, b, k);
+    players[id].setAttribute('transform', `translate(${p[0].toFixed(2)},${p[1].toFixed(2)})`);
+  });
+  const b0 = (f.cut || fi === 0) ? ballPos(f) : ballPos(prev), b1 = ballPos(f);
+  const bp = lerp(b0, b1, k);
+  const lift = f.air && !f.cut && fi > 0 ? Math.sin(Math.PI * k) * Math.min(8, Math.hypot(b1[0]-b0[0], b1[1]-b0[1]) * .25) : 0;
+  shadow.setAttribute('cx', bp[0]); shadow.setAttribute('cy', bp[1]); shadow.style.opacity = lift > .2 ? '.25' : '0';
+  ball.setAttribute('cx', bp[0]); ball.setAttribute('cy', bp[1] - lift); ball.setAttribute('r', (.85 + lift * .06).toFixed(2));
+}
+function goto(sIdx, fIdx, animate) {
+  si = sIdx; fi = fIdx; el_ = 0;
+  if (animate && !reduce) { t = 0; phase = 'move'; } else { t = 1; phase = 'hold'; }
+  drawStatic(); drawDynamic();
+}
+function updPlay() { document.getElementById('bPlay').textContent = playing ? 'Pausa' : 'Reproducir'; }
+function selectScene(i, autoplay = true) {
+  const s = SCENES[i];
+  document.querySelectorAll('.tab').forEach((b, j) => b.setAttribute('aria-selected', String(j === i)));
+  document.getElementById('sceneTitle').textContent = s.title;
+  const nm = {...NAMES, ...(s.names || {})}; SC.forEach(id => { players[id].querySelector('text').textContent = nm[id]; });
+  const fill = (id, arr) => { const u = document.getElementById(id); u.innerHTML = ''; arr.forEach(x => { const li = document.createElement('li'); li.textContent = x; u.appendChild(li); }); };
+  fill('sWhat', s.what); fill('sEv', s.ev); fill('sCounter', s.counter);
+  const dots = document.getElementById('dots'); dots.innerHTML = '';
+  s.F.forEach((_, j) => { const d = document.createElement('button'); d.type = 'button'; d.className = 'dot'; d.setAttribute('aria-label', `Paso ${j + 1}`); d.addEventListener('click', () => goto(si, j, false)); dots.appendChild(d); });
+  playing = autoplay; updPlay();
+  goto(i, 0, false);
+  try { history.replaceState(null, '', '#' + s.id); } catch (e) {}
+}
+let last = performance.now();
+function tick(now) {
+  const dt = Math.min(64, now - last); last = now;
+  const s = SCENES[si];
+  if (phase === 'move') { el_ += dt * speed; t = Math.min(1, el_ / MOVE); drawDynamic(); if (t >= 1) { phase = 'hold'; el_ = 0; } }
+  else if (playing) { el_ += dt * speed; if (el_ > HOLD) { if (fi < s.F.length - 1) goto(si, fi + 1, true); else { playing = false; updPlay(); } } }
+  requestAnimationFrame(tick);
+}
+const tabs = document.getElementById('tabs'); const groups = {};
+SCENES.forEach((s, i) => {
+  if (!groups[s.group]) { const g = document.createElement('div'); g.className = 'tg'; const b = document.createElement('b'); b.textContent = s.group; const row = document.createElement('div'); g.append(b, row); tabs.appendChild(g); groups[s.group] = row; }
+  const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'tab' + (s.weak ? ' weak' : '') + (s.plan ? ' plan' : ''); bt.setAttribute('role', 'tab'); bt.textContent = s.title;
+  bt.addEventListener('click', () => selectScene(i, true));
+  groups[s.group].appendChild(bt);
+});
+document.getElementById('bPlay').addEventListener('click', () => {
+  const s = SCENES[si];
+  if (!playing && fi === s.F.length - 1 && phase === 'hold') goto(si, 0, false);
+  playing = !playing; el_ = 0; updPlay();
+});
+document.getElementById('bNext').addEventListener('click', () => { const s = SCENES[si]; if (fi < s.F.length - 1) goto(si, fi + 1, true); });
+document.getElementById('bPrev').addEventListener('click', () => { if (fi > 0) goto(si, fi - 1, false); });
+document.getElementById('bRestart').addEventListener('click', () => { playing = true; updPlay(); goto(si, 0, false); });
+document.getElementById('speed').addEventListener('change', e => { speed = Number(e.target.value) || 1; });
+const start = Math.max(0, SCENES.findIndex(s => s.id === location.hash.slice(1)));
+selectScene(start, !reduce);
+window.showScene = id => { const i = SCENES.findIndex(s => s.id === id); if (i >= 0) { selectScene(i, true); const b = document.getElementById('pizarra'); if (b) b.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); } };
+requestAnimationFrame(tick);
+})();
+</script>
+
+</body></html>
